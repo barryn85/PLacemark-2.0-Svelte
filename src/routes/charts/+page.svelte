@@ -1,57 +1,38 @@
 <script lang="ts">
 
-  import Chart from "svelte-frappe-charts";
+  import Chart
+    from "svelte-frappe-charts";
 
   let { data } =
     $props();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let placemarks: any[] =
-  data.placemarks;
+  let placemarks =
+    data.placemarks;
 
-  let attendanceData = {
+  const attendanceData = {
 
-    labels: [] as string[],
+    labels:
+      placemarks.map(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (placemark: any) =>
+          placemark.name
+      ),
 
     datasets: [
       {
-        values: [] as number[],
+        values:
+          placemarks.map(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (placemark: any) =>
+              Number(
+                placemark.attendance
+              )
+          ),
       },
     ],
 
   };
-
-  let categoryData = {
-
-    labels: [] as string[],
-
-    datasets: [
-      {
-        values: [] as number[],
-      },
-    ],
-
-  };
-
-  placemarks.forEach(
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (placemark: any) => {
-
-      attendanceData.labels.push(
-        placemark.name
-      );
-
-      attendanceData.datasets[0]
-        .values.push(
-          Number(
-            placemark.attendance
-          )
-        );
-
-    }
-
-  );
 
   const categoryTotals:
     Record<string, number> = {};
@@ -83,22 +64,23 @@
 
   );
 
-  Object.keys(
-    categoryTotals
-  ).forEach((category) => {
+  const categoryData = {
 
-    categoryData.labels.push(
-      category
-    );
+    labels:
+      Object.keys(
+        categoryTotals
+      ),
 
-    categoryData.datasets[0]
-      .values.push(
-        categoryTotals[
-          category
-        ]
-      );
+    datasets: [
+      {
+        values:
+          Object.values(
+            categoryTotals
+          ),
+      },
+    ],
 
-  });
+  };
 
 </script>
 
