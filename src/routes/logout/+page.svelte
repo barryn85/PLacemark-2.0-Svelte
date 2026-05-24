@@ -1,20 +1,21 @@
 <script lang="ts">
+  import {goto} from "$app/navigation";
+  import {userService} from "$lib/services/user-service";
 
-  import { goto }  from "$app/navigation";
-  import { onMount }  from "svelte"
-  import { loggedInUser }  from "$lib/runes.svelte";
-
-  onMount(() => {
-
-    localStorage.removeItem(
-      "user"
+  async function logout() {
+    userService.clearSession();
+    await fetch(
+      "/api/users/logout",
+      {
+        method: "POST",
+      }
     );
-    loggedInUser.email = "";
-    loggedInUser.name = "";
-    loggedInUser.token = "";
-    loggedInUser._id = "";
+
+    // eslint-disable-next-line svelte/no-navigation-without-resolve
     goto("/");
 
-  });
+  }
+
+  logout();
 
 </script>

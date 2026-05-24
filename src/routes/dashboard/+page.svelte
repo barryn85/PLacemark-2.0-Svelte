@@ -1,45 +1,64 @@
 <script lang="ts">
 
-  import { onMount }   from "svelte";
-  import { goto }   from "$app/navigation";
-  import { loggedInUser }  from "$lib/runes.svelte";
-  import { placemarkService }  from "$lib/services/placemark-service";
-  import LeafletMap   from "$lib/LeafletMap.svelte";
-  import PlacemarkForm   from "./PlacemarkForm.svelte";
-  import PlacemarkCard   from "./PlacemarkCard.svelte";
+  import { goto } from "$app/navigation";
+  import { loggedInUser } from "$lib/runes.svelte";
+  import { placemarkService } from "$lib/services/placemark-service";
+  import LeafletMap from "$lib/LeafletMap.svelte";
+  import PlacemarkForm from "./PlacemarkForm.svelte";
+  import PlacemarkCard from "./PlacemarkCard.svelte";
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let { data } =
+    $props();
+
   let placemarks =
-    $state<any[]>([]);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    $state<any[]>(
+      data.placemarks
+    );
 
-  let name = $state("");
-  let category = $state("");
-  let attendance = $state(0);
-  let lat =  $state(0);
-  let lng =  $state(0);
-  let image = $state("");
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let name =
+    $state("");
+  let category =
+    $state("");
+  let attendance =
+    $state(0);
+  let lat =
+    $state(0);
+  let lng =
+    $state(0);
+  let image =
+    $state("");
   let editingPlacemark =
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     $state<any>(null);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  
   let map =
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     $state<any>(null);
+  if (
+    !loggedInUser.token ||
+    loggedInUser.token === ""
+  ) {
+    // eslint-disable-next-line svelte/no-navigation-without-resolve
+    goto("/login");
 
-  onMount(async () => {
+  }
 
-    if (!loggedInUser.token) {
-      goto("/login");
-      return;
+$effect(() => {
 
-    }
+  if (
+    !map ||
+    !placemarks ||
+    placemarks.length === 0
+  ) {
+    return;
+  }
 
-    placemarks =
-      await placemarkService
-        .getPlacemarks();
+  setTimeout(() => {
 
     placemarks.forEach(
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (placemark: any) => {
 
@@ -49,7 +68,6 @@
           placemark.name,
           placemark.category
         );
-
       }
     );
 
@@ -64,23 +82,28 @@
         lastPlacemark.lat,
         lastPlacemark.lng
       );
-
     }
+  }, 100);
 
-  });
-
+});
+  
   async function addPlacemark() {
 
     const placemark = {
-
       userid:
         loggedInUser._id,
-      name: name,
-      category: category,
-      lat: lat,
-      lng: lng,
-      attendance: attendance,
-      image: image
+      name:
+        name,
+      category:
+        category,
+      lat:
+        lat,
+      lng:
+        lng,
+      attendance:
+        attendance,
+      image:
+        image,
     };
 
     await placemarkService
@@ -92,25 +115,12 @@
       await placemarkService
         .getPlacemarks();
 
-    map.addMarker(
-      placemark.lat,
-      placemark.lng,
-      placemark.name,
-      placemark.category
-    );
-
-    map.moveTo(
-      placemark.lat,
-      placemark.lng
-    );
-
     name = "";
     category = "";
     attendance = 0;
     lat = 0;
     lng = 0;
     image = "";
-
   }
 
   async function deletePlacemark(
@@ -118,7 +128,9 @@
   ) {
 
     await placemarkService
-      .deletePlacemark(id);
+      .deletePlacemark(
+        id
+      );
 
     placemarks =
       await placemarkService
@@ -126,14 +138,15 @@
 
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
   function editPlacemark(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     placemark: any
   ) {
-
     editingPlacemark =
       placemark;
-    name = placemark.name;
+    name =
+      placemark.name;
     category =
       placemark.category;
     attendance =
@@ -150,14 +163,19 @@
 
     editingPlacemark.name =
       name;
+
     editingPlacemark.category =
       category;
+
     editingPlacemark.attendance =
       attendance;
+
     editingPlacemark.lat =
       lat;
+
     editingPlacemark.lng =
       lng;
+
     editingPlacemark.image =
       image;
 
@@ -172,7 +190,6 @@
 
     editingPlacemark =
       null;
-
     name = "";
     category = "";
     attendance = 0;
@@ -183,23 +200,37 @@
 
 </script>
 
-<h1 class="title">
+<section class="hero is-dark mb-5">
 
-  Metallica Stadium Tracker
+  <div class="hero-body">
 
-</h1>
+    <p class="title">
+      Metallica Concert Tracker
+    </p>
 
-<LeafletMap
-  bind:this={map}
-  height={500}
-/>
+    <p class="subtitle">
+      Track concerts worldwide
+    </p>
 
-<p class="mb-5">
+  </div>
 
-  Total Placemarks:
+</section>
+
+<div class="box p-2 mb-5">
+
+  <LeafletMap
+    bind:this={map}
+    height={500}
+  />
+
+</div>
+
+<div class="notification is-dark mb-5">
+  <strong>
+    Total Venues:
+  </strong>
   {placemarks.length}
-
-</p>
+</div>
 
 <PlacemarkForm
   bind:name
@@ -224,9 +255,6 @@
         {editPlacemark}
         {deletePlacemark}
       />
-
     </div>
-
   {/each}
-
 </div>

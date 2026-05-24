@@ -12,14 +12,14 @@
 
       <h1 class="title is-1 has-text-warning">
 
-        Metallica Stadium Tracker
+        Metallica Concert Tracker
 
       </h1>
 
       <h2
         class="subtitle is-4"
       >
-        Track legendary concerts around the world.
+        Track concerts worldwide. 
       </h2>
 
       <img

@@ -1,11 +1,8 @@
-import axios from "axios";
-import type { Session, User, } from "$lib/types/concert-types";
-import { loggedInUser } from "$lib/runes.svelte";
+import type {Session,User} from "$lib/types/concert-types";
+
+import {loggedInUser} from "$lib/runes.svelte";
 
 export const userService = {
-
-  baseUrl:
-    "http://localhost:3000",
 
   async signup(
     user: User
@@ -14,12 +11,24 @@ export const userService = {
     try {
 
       const response =
-        await axios.post(
-          `${this.baseUrl}/api/users`,
-          user
+        await fetch(
+          "/api/users",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
+
+            body:
+              JSON.stringify(
+                user
+              ),
+          }
         );
 
-      return response.data;
+      return response.ok;
 
     } catch (error) {
 
@@ -89,39 +98,60 @@ export const userService = {
     try {
 
       const response =
-        await axios.post(
-          `${this.baseUrl}/api/users/authenticate`,
+        await fetch(
+          "/api/users/login",
           {
-            email,
-            password,
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
+
+            body:
+              JSON.stringify({
+                email,
+                password,
+              }),
           }
         );
 
-      const session: Session = {
+      const data =
+        await response.json();
 
-        name:
-          response.data.firstName,
+      if (data.success) {
 
-        token: "loggedin",
+        const session:
+          Session = {
 
-        _id:
-          response.data._id,
+          name:
+            `${data.user.firstName} ${data.user.lastName}`,
 
-      };
+          token:
+            data.user._id,
 
-      this.saveSession(
-        session,
-        email
-      );
+          _id:
+            data.user._id,
 
-      return session;
+          email:
+            data.user.email,
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
+        };
 
-      console.log(
-        error.response?.data
-      );
+        this.saveSession(
+          session,
+          email
+        );
+
+        return session;
+
+      }
+
+      return null;
+
+    } catch (error) {
+
+      console.log(error);
 
       return null;
 
@@ -129,12 +159,23 @@ export const userService = {
 
   },
 
-  clearSession() {
+ clearSession() {
+
+  loggedInUser.email =
+    "";
+
+  loggedInUser.name =
+    "";
+
+  loggedInUser.token =
+    "";
+
+  loggedInUser._id =
+    "";
 
   localStorage.removeItem(
     "user"
   );
-
-},
+ },
 
 };

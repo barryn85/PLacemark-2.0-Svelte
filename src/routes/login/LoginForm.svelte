@@ -60,6 +60,7 @@
 
 </script>
 
+<form>
 <div class="box">
 
   {#if message}
@@ -83,3 +84,5 @@
   </button>
 
 </div>
+
+</form>

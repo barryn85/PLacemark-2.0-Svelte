@@ -1,9 +1,7 @@
 <script lang="ts">
 
   let {
-
     name = $bindable(),
-    description = $bindable(),
     category = $bindable(),
     attendance = $bindable(),
     lat = $bindable(),
