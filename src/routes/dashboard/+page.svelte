@@ -36,14 +36,7 @@
   let map =
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     $state<any>(null);
-  if (
-    !loggedInUser.token ||
-    loggedInUser.token === ""
-  ) {
-    // eslint-disable-next-line svelte/no-navigation-without-resolve
-    goto("/login");
-
-  }
+  
 
 $effect(() => {
 
@@ -200,7 +193,7 @@ $effect(() => {
 
 </script>
 
-<section class="hero is-dark mb-5">
+<section class="hero mb-5">
 
   <div class="hero-body">
 
@@ -225,7 +218,7 @@ $effect(() => {
 
 </div>
 
-<div class="notification is-dark mb-5">
+<div class="notification is-light mb-5">
   <strong>
     Total Venues:
   </strong>
