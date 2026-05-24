@@ -1,9 +1,19 @@
 <script lang="ts">
-import { loggedInUser } from "$lib/runes.svelte";
-  import { placemarkService }  from "$lib/services/placemark-service";
-  import LeafletMap from "$lib/LeafletMap.svelte";
-  import PlacemarkForm  from "./PlacemarkForm.svelte";
-  import PlacemarkCard from "./PlacemarkCard.svelte";
+
+  import { loggedInUser }
+    from "$lib/runes.svelte";
+
+  import { placemarkService }
+    from "$lib/services/placemark-service";
+
+  import LeafletMap
+    from "$lib/LeafletMap.svelte";
+
+  import PlacemarkForm
+    from "./PlacemarkForm.svelte";
+
+  import PlacemarkCard
+    from "./PlacemarkCard.svelte";
 
   let { data } =
     $props();
@@ -48,7 +58,6 @@ import { loggedInUser } from "$lib/runes.svelte";
     if (
       !map ||
       !placemarks ||
-      placemarks.length === 0 ||
       markersLoaded
     ) {
 
@@ -57,6 +66,8 @@ import { loggedInUser } from "$lib/runes.svelte";
     }
 
     setTimeout(() => {
+
+      map.clearMarkers();
 
       placemarks.forEach(
 
@@ -74,12 +85,14 @@ import { loggedInUser } from "$lib/runes.svelte";
 
       );
 
-      const lastPlacemark =
-        placemarks[
-          placemarks.length - 1
-        ];
+      if (
+        placemarks.length > 0
+      ) {
 
-      if (lastPlacemark) {
+        const lastPlacemark =
+          placemarks[
+            placemarks.length - 1
+          ];
 
         map.moveTo(
           lastPlacemark.lat,
@@ -101,16 +114,22 @@ import { loggedInUser } from "$lib/runes.svelte";
 
       userid:
         loggedInUser._id,
+
       name:
         name,
+
       category:
         category,
+
       lat:
         lat,
+
       lng:
         lng,
+
       attendance:
         attendance,
+
       image:
         image,
 
@@ -121,18 +140,24 @@ import { loggedInUser } from "$lib/runes.svelte";
         placemark
       );
 
-    placemarks =
-      await placemarkService
-        .getPlacemarks();
+    placemarks = [
+      ...placemarks,
+      placemark
+    ];
 
     markersLoaded =
       false;
 
     name = "";
+
     category = "";
+
     attendance = 0;
+
     lat = 0;
+
     lng = 0;
+
     image = "";
 
   }
@@ -147,8 +172,14 @@ import { loggedInUser } from "$lib/runes.svelte";
       );
 
     placemarks =
-      await placemarkService
-        .getPlacemarks();
+      placemarks.filter(
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (placemark: any) =>
+
+          placemark._id !== id
+
+      );
 
     markersLoaded =
       false;
@@ -164,16 +195,22 @@ import { loggedInUser } from "$lib/runes.svelte";
 
     editingPlacemark =
       placemark;
+
     name =
       placemark.name;
+
     category =
       placemark.category;
+
     attendance =
       placemark.attendance;
+
     lat =
       placemark.lat;
+
     lng =
       placemark.lng;
+
     image =
       placemark.image;
 
@@ -186,12 +223,16 @@ import { loggedInUser } from "$lib/runes.svelte";
 
     editingPlacemark.category =
       category;
+
     editingPlacemark.attendance =
       attendance;
+
     editingPlacemark.lat =
       lat;
+
     editingPlacemark.lng =
       lng;
+
     editingPlacemark.image =
       image;
 
@@ -200,9 +241,9 @@ import { loggedInUser } from "$lib/runes.svelte";
         editingPlacemark
       );
 
-    placemarks =
-      await placemarkService
-        .getPlacemarks();
+    placemarks = [
+      ...placemarks
+    ];
 
     markersLoaded =
       false;
@@ -211,10 +252,15 @@ import { loggedInUser } from "$lib/runes.svelte";
       null;
 
     name = "";
+
     category = "";
+
     attendance = 0;
+
     lat = 0;
+
     lng = 0;
+
     image = "";
 
   }
