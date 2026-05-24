@@ -105,6 +105,12 @@
 
   }
 
+  export function clearMarkers() {
+
+  markers.clearLayers();
+
+}
+
   export function moveTo(
     lat: number,
     lng: number
