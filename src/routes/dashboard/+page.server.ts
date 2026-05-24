@@ -16,8 +16,7 @@ export const load:
       placemarks:
         JSON.parse(
           JSON.stringify(
-            await placemarkStore
-              .find()
+            await placemarkStore.find(locals.user._id)
           )
         ),
 
