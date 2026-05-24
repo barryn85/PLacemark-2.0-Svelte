@@ -1,19 +1,8 @@
 <script lang="ts">
-
-  import { loggedInUser }
-    from "$lib/runes.svelte";
-
-  import { placemarkService }
-    from "$lib/services/placemark-service";
-
-  import LeafletMap
-    from "$lib/LeafletMap.svelte";
-
-  import PlacemarkForm
-    from "./PlacemarkForm.svelte";
-
-  import PlacemarkCard
-    from "./PlacemarkCard.svelte";
+import { loggedInUser } from "$lib/runes.svelte";
+import { placemarkService } from "$lib/services/placemark-service";
+import LeafletMap from "$lib/LeafletMap.svelte";import PlacemarkForm from "./PlacemarkForm.svelte";
+import PlacemarkCard from "./PlacemarkCard.svelte";
 
   let { data } =
     $props();
@@ -135,14 +124,15 @@
 
     };
 
-    await placemarkService
-      .addPlacemark(
-        placemark
-      );
+    const savedPlacemark =
+  await placemarkService
+    .addPlacemark(
+      placemark
+    );
 
     placemarks = [
       ...placemarks,
-      placemark
+      savedPlacemark
     ];
 
     markersLoaded =
