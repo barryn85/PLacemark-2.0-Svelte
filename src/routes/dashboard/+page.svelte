@@ -15,19 +15,14 @@ import PlacemarkCard from "./PlacemarkCard.svelte";
 
   let name =
     $state("");
-
   let category =
     $state("");
-
   let attendance =
     $state(0);
-
   let lat =
     $state(0);
-
   let lng =
     $state(0);
-
   let image =
     $state("");
 
@@ -44,58 +39,52 @@ import PlacemarkCard from "./PlacemarkCard.svelte";
 
   $effect(() => {
 
-    if (
-      !map ||
-      !placemarks ||
-      markersLoaded
-    ) {
+  if (
+    !map ||
+    !placemarks
+  ) {
 
-      return;
+    return;
 
-    }
+  }
 
-    setTimeout(() => {
+  setTimeout(() => {
+    map.clearMarkers();
+    placemarks.forEach(
 
-      map.clearMarkers();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (placemark: any) => {
 
-      placemarks.forEach(
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (placemark: any) => {
-
-          map.addMarker(
-            placemark.lat,
-            placemark.lng,
-            placemark.name,
-            placemark.category
-          );
-
-        }
-
-      );
-
-      if (
-        placemarks.length > 0
-      ) {
-
-        const lastPlacemark =
-          placemarks[
-            placemarks.length - 1
-          ];
-
-        map.moveTo(
-          lastPlacemark.lat,
-          lastPlacemark.lng
+        map.addMarker(
+          placemark.lat,
+          placemark.lng,
+          placemark.name,
+          placemark.category
         );
 
       }
 
-      markersLoaded =
-        true;
+    );
 
-    }, 100);
+    if (
+      placemarks.length > 0
+    ) {
 
-  });
+      const lastPlacemark =
+        placemarks[
+          placemarks.length - 1
+        ];
+
+      map.moveTo(
+        lastPlacemark.lat,
+        lastPlacemark.lng
+      );
+
+    }
+
+  }, 100);
+
+});
 
   async function addPlacemark() {
 
@@ -106,22 +95,16 @@ import PlacemarkCard from "./PlacemarkCard.svelte";
 
       name:
         name,
-
       category:
         category,
-
       lat:
         lat,
-
       lng:
         lng,
-
       attendance:
         attendance,
-
       image:
         image,
-
     };
 
     const savedPlacemark =
@@ -139,15 +122,10 @@ import PlacemarkCard from "./PlacemarkCard.svelte";
       false;
 
     name = "";
-
     category = "";
-
     attendance = 0;
-
     lat = 0;
-
     lng = 0;
-
     image = "";
 
   }
@@ -185,47 +163,34 @@ import PlacemarkCard from "./PlacemarkCard.svelte";
 
     editingPlacemark =
       placemark;
-
     name =
       placemark.name;
-
     category =
       placemark.category;
-
     attendance =
       placemark.attendance;
-
     lat =
       placemark.lat;
-
     lng =
       placemark.lng;
-
     image =
       placemark.image;
-
   }
 
   async function savePlacemark() {
 
     editingPlacemark.name =
       name;
-
     editingPlacemark.category =
       category;
-
     editingPlacemark.attendance =
       attendance;
-
     editingPlacemark.lat =
       lat;
-
     editingPlacemark.lng =
       lng;
-
     editingPlacemark.image =
       image;
-
     await placemarkService
       .updatePlacemark(
         editingPlacemark
@@ -242,15 +207,10 @@ import PlacemarkCard from "./PlacemarkCard.svelte";
       null;
 
     name = "";
-
     category = "";
-
     attendance = 0;
-
     lat = 0;
-
     lng = 0;
-
     image = "";
 
   }
