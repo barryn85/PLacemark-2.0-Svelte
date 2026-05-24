@@ -1,11 +1,10 @@
-import {redirect} from "@sveltejs/kit";
-import type {PageServerLoad} from "./$types";
+import { redirect} from "@sveltejs/kit";
+import type { PageServerLoad} from "./$types";
 import {placemarkStore} from "$lib/models/mongo/placemark-store";
 
 export const load:
   PageServerLoad =
   async ({ locals }) => {
-
     if (!locals.user) {
       throw redirect(
         302,
@@ -18,7 +17,9 @@ export const load:
         JSON.parse(
           JSON.stringify(
             await placemarkStore
-              .find()
+              .find(
+                locals.user._id
+              )
           )
         ),
     };
