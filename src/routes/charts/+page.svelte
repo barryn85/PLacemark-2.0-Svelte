@@ -1,23 +1,20 @@
 <script lang="ts">
 
-  // @ts-ignore
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   import Chart from "svelte-frappe-charts";
+  import { onMount } from "svelte";
+  import { placemarkService } from "$lib/services/placemark-service";
 
-  import { onMount }
-    from "svelte";
-
-  import { placemarkService }
-    from "$lib/services/placemark-service";
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let placemarks: any[] = [];
 
   let attendanceData = $state({
 
-    labels: [],
+    labels: [] as string[],
 
     datasets: [
       {
-        values: [],
+        values: [] as number[],
       },
     ],
 
@@ -25,11 +22,11 @@
 
   let categoryData = $state({
 
-    labels: [],
+    labels: [] as string[],
 
     datasets: [
       {
-        values: [],
+        values: [] as number[],
       },
     ],
 
@@ -38,9 +35,12 @@
   onMount(async () => {
 
     placemarks =
-      await placemarkService.getPlacemarks();
+      await placemarkService
+        .getPlacemarks();
 
     placemarks.forEach(
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (placemark: any) => {
 
         attendanceData.labels.push(
@@ -49,17 +49,21 @@
 
         attendanceData.datasets[0]
           .values.push(
-            Number(placemark.attendance)
-          );    
-          
+            Number(
+              placemark.attendance
+            )
+          );
 
-        }
+      }
+
     );
 
     const categoryTotals:
       Record<string, number> = {};
 
     placemarks.forEach(
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (placemark: any) => {
 
         if (
@@ -81,6 +85,7 @@
         }
 
       }
+
     );
 
     Object.keys(
@@ -105,17 +110,21 @@
 </script>
 
 <h1 class="title">
+
   Concert Analytics
+
 </h1>
 
-<div class="columns">
+<div class="columns mt-5">
 
   <div class="column">
 
     <div class="box">
 
       <h2 class="title is-4">
+
         Attendance by Venue
+
       </h2>
 
       <Chart
@@ -132,7 +141,9 @@
     <div class="box">
 
       <h2 class="title is-4">
+
         Concerts by Category
+
       </h2>
 
       <Chart

@@ -129,4 +129,12 @@ export const userService = {
 
   },
 
+  clearSession() {
+
+  localStorage.removeItem(
+    "user"
+  );
+
+},
+
 };

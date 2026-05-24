@@ -19,8 +19,9 @@ export const placemarkService = {
 
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   async addPlacemark(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     placemark: any
   ) {
 
@@ -34,8 +35,9 @@ export const placemarkService = {
 
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
 async updatePlacemark(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   placemark: any
 ) {
 

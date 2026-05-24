@@ -11,6 +11,7 @@
 
     <a
       class="navbar-item"
+      // eslint-disable-next-line svelte/no-navigation-without-resolve
       href="/"
     >
 
@@ -26,6 +27,7 @@
 
       <a
         class="navbar-item"
+        // eslint-disable-next-line svelte/no-navigation-without-resolve
         href="/"
       >
 
@@ -35,6 +37,7 @@
 
       <a
         class="navbar-item"
+        // eslint-disable-next-line svelte/no-navigation-without-resolve
         href="/dashboard"
       >
 
@@ -44,6 +47,7 @@
 
       <a
         class="navbar-item"
+        // eslint-disable-next-line svelte/no-navigation-without-resolve
         href="/charts"
       >
 
@@ -77,6 +81,7 @@
 
         <a
           class="navbar-item"
+          
           href="/signup"
         >
 
@@ -86,6 +91,7 @@
 
         <a
           class="navbar-item"
+          
           href="/login"
         >
 
