@@ -7,7 +7,7 @@
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let placemarks: any[] =
-    data.placemarks;
+  data.placemarks;
 
   let attendanceData = {
 
@@ -101,3 +101,51 @@
   });
 
 </script>
+
+<h1 class="title">
+
+  Concert Analytics
+
+</h1>
+
+<div class="columns mt-5">
+
+  <div class="column">
+
+    <div class="box">
+
+      <h2 class="title is-4">
+
+        Attendance by Venue
+
+      </h2>
+
+      <Chart
+        data={attendanceData}
+        type="bar"
+      />
+
+    </div>
+
+  </div>
+
+  <div class="column">
+
+    <div class="box">
+
+      <h2 class="title is-4">
+
+        Concerts by Category
+
+      </h2>
+
+      <Chart
+        data={categoryData}
+        type="pie"
+      />
+
+    </div>
+
+  </div>
+
+</div>
